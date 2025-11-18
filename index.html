@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>2048 с анимацией</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app">
+        <header>
+            <h1></h1>
+            <div class="square">
+              <div class="square-content">2048</div>
+            </div>
+            <div class="controls">
+                <div class="score-board">
+                    <div class="score" id="score">Score: 0</div>
+                    <div class="score" id="best">Best: 0</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="game-wrap">
+            <div id="game-container"></div>
+            <div class="side-buttons">
+          <button class="btn" id="btn-restart" title="Начать заново">⟳</button>
+          <button class="btn secondary" id="btn-undo" title="Отмена хода">Отменить</button>
+          <button class="btn secondary" id="btn-leaders">Лидерборд</button>
+          </div>
+            
+            <div class="hud">
+                <p></p>
+                <div class="mobile-controls" id="mobile-controls">
+                    <div class="dpad">
+                        <div></div><button data-dir="up">↑</button><div></div>
+                        <button data-dir="left">←</button><button data-dir="down">↓</button><button data-dir="right">→</button>
+                        <div></div><div></div><div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="modal" id="modal-gameover">
+            <div class="panel">
+                <div id="gameover-content">
+                    <p id="gameover-msg">Игра окончена</p>
+                    <input id="player-name" placeholder="Ваше имя" />
+                    <div style="margin-top:8px;display:flex;gap:8px;">
+                        <button class="btn" id="save-score">Сохранить результат</button>
+                        <button class="btn secondary" id="restart-from-modal">Начать заново</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       
+        <div class="modal" id="modal-leaders">
+            <div class="panel">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                    <h3>Таблица рекордов</h3>
+                    <button class="btn secondary" id="close-leaders">Закрыть</button>
+                </div>
+                <div class="leaders" id="leaders-list"></div>
+            </div>
+        </div>
+
+        <footer class="footer">
+          <p class= "footer_copy">&copy; 2048 Vov4ik</p>
+        </footer> 
+    </div>
+
+    <script src="app.js" defer></script>
+</body>
+</html>
