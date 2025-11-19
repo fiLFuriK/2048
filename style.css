@@ -250,7 +250,6 @@ footer {
 @media (max-width:520px){
     :root{--tile-size:56px}
     .app{padding:12px}
-    .game-wrap{flex-direction:column}
     .mobile-controls{display:block}
 }
 
@@ -258,6 +257,7 @@ footer {
 .merge-effect{
     transform:scale(1.08);
 }
+
 
 
 
