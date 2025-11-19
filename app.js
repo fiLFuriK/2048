@@ -583,20 +583,30 @@ document.querySelectorAll('[data-dir]').forEach(btn => btn.addEventListener('cli
 
 
 let touchStartX = 0, touchStartY = 0;
+
 boardEl.addEventListener('touchstart', e => {
-  if (e.touches.length === 1) { touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; }
+    if (e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    }
 }, { passive: true });
+
+boardEl.addEventListener('touchmove', e => {
+    e.preventDefault();
+}, { passive: false }); 
+
 boardEl.addEventListener('touchend', e => {
-  const t = e.changedTouches[0];
-  const dx = t.clientX - touchStartX;
-  const dy = t.clientY - touchStartY;
-  if (Math.abs(dx) + Math.abs(dy) < 30) return;
-  if (Math.abs(dx) > Math.abs(dy)){
-    if (dx > 0) move('right'); else move('left');
-  } else {
-    if (dy > 0) move('down'); else move('up');
-  }
+    const t = e.changedTouches[0];
+    const dx = t.clientX - touchStartX;
+    const dy = t.clientY - touchStartY;
+    if (Math.abs(dx) + Math.abs(dy) < 30) return; 
+    if (Math.abs(dx) > Math.abs(dy)){
+        if (dx > 0) move('right'); else move('left');
+    } else {
+        if (dy > 0) move('down'); else move('up');
+    }
 });
+
 
 function init(){
   if (!loadGame()){
