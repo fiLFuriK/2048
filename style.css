@@ -187,26 +187,6 @@ footer {
 .hud{display:flex;flex-direction:column;gap:12px}
 
 
-.mobile-controls{display:none;gap:6px;margin-top:12px}
-.dpad{
-    display:grid;
-    grid-template-columns:repeat(3,48px);
-    grid-template-rows:repeat(3,48px);
-    gap:6px;
-    justify-items:center;
-    align-items:center
-}
-.dpad button{
-    width:48px;
-    height:48px;
-    border-radius:8px;
-    background:#6c44a8;
-    color:#fff;
-    border:none;
-    box-shadow:0 0 6px rgba(150,90,250,.35);
-}
-
-
 .modal{
     position:fixed;
     inset:0;
@@ -292,7 +272,15 @@ footer {
         min-width: 90px;
     }
 
-    .mobile-controls {
-        display: none; 
-    }
 }
+
+
+
+
+
+
+
+
+
+
+
