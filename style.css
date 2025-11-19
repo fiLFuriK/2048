@@ -247,7 +247,7 @@ footer {
 }
 
 
-@media (max-width: 520px) {
+@media (max-width: 640px) {
     .app {
         padding: 10px;
     }
@@ -294,6 +294,7 @@ footer {
 .merge-effect{
     transform:scale(1.08);
 }
+
 
 
 
