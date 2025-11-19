@@ -247,16 +247,54 @@ footer {
 }
 
 
-@media (max-width:520px){
-    :root{--tile-size:56px}
-    .app{padding:12px}
-    .mobile-controls{display:block}
-}
+@media (max-width: 520px) {
+    .app {
+        padding: 10px;
+    }
 
+    .game-wrap {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 12px; 
+    }
+
+    #game-container {
+        transform: scale(0.90);     
+        transform-origin: top center;
+    }
+
+    .side-buttons {
+        margin: 0;
+        padding: 0;
+        gap: 8px;
+    }
+
+    .side-buttons .btn {
+        padding: 6px 8px;
+        font-size: 13px;
+        min-width: 85px;
+    }
+
+    .mobile-controls {
+        display: flex !important;
+        margin-top: 14px;
+        justify-content: center;
+        width: 100%;
+        order: 3; 
+    }
+
+    .dpad {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
 
 .merge-effect{
     transform:scale(1.08);
 }
+
 
 
 
