@@ -362,24 +362,41 @@ function move(direction){
     }
   });
 
-  tiles.forEach(t => {
+ 
+tiles.forEach(t => {
     const el = tilesMap.get(t.id);
     if (!el) return;
+
     const dest = destinations.get(t.id);
-    if (dest === null){
-      el.style.transition = 'transform 0.18s ease, opacity 0.12s ease';
-      el.style.opacity = '0';
-      setTimeout(()=> {
-        el.remove();
-        tilesMap.delete(t.id);
-      }, 180);
-    } else {
-      const { x, y } = tilePositionXY(dest);
-      requestAnimationFrame(()=> el.style.transform = `translate(${x}px,${y}px)`);
+
+    
+    if (mergeTargets.has(t.id)) {
+        const targetId = mergeTargets.get(t.id);
+        const targetTile = newTilesFinal.find(o => o.id === targetId);
+        if (targetTile) {
+            const { x, y } = tilePositionXY(targetTile.pos);
+            requestAnimationFrame(() => {
+                el.style.transition = "transform 0.18s ease";
+                el.style.transform = `translate(${x}px,${y}px)`;
+            });
+        }
+        return;
     }
-  });
 
+    
+    if (dest === null) {
+        el.style.transition = "transform 0.18s ease, opacity 0.18s ease";
+        el.style.opacity = "0";
+        return;
+    }
 
+    
+    const { x, y } = tilePositionXY(dest);
+    requestAnimationFrame(() => {
+        el.style.transition = "transform 0.18s ease";
+        el.style.transform = `translate(${x}px,${y}px)`;
+    });
+});
 
   setTimeout(()=> {
     for (const [removedId, targetId] of mergeTargets){
@@ -502,14 +519,14 @@ function getLeaders(){
 }
 function saveLeader(name, score){
   const arr = getLeaders();
-  arr.push({ name: name || '---', score, date: new Date().toLocaleString() });
+  arr.push({ name: name || '---', score });
   arr.sort((a,b)=> b.score - a.score);
   const top = arr.slice(0,10);
   localStorage.setItem(STORAGE_LEADERS, JSON.stringify(top));
 }
 function showLeaders(){
   const arr = getLeaders();
-  let html = '<table><thead><tr><th>#</th><th>Имя</th><th>Очки</th><th>Дата</th></tr></thead><tbody>';
+  let html = '<table><thead><tr><th>#</th><th>Имя</th><th>Очки</th></tr></thead><tbody>';
   if (arr.length === 0) html += '<tr><td colspan="4">Рекордов пока нет</td></tr>';
   arr.forEach((it,i)=>{ html += `<tr><td>${i+1}</td><td>${escapeHtml(it.name)}</td><td>${it.score}</td><td>${escapeHtml(it.date)}</td></tr>` });
   html += '</tbody></table>';
