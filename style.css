@@ -233,6 +233,13 @@ footer {
     box-shadow:0 0 12px rgba(140,90,220,.4);
 }
 
+
+
+#close-leaders {
+  margin-left: 15px;
+  margin-bottom: 50px;
+}
+
 .hidden{display:none}
 
 .leaders table{
@@ -247,7 +254,12 @@ footer {
 }
 
 
-@media (max-width: 640px) {
+@media (max-width:390px){
+    :root{--tile-size:56px}
+    .app{padding:12px}
+    .game-wrap{flex-direction:column}
+    .mobile-controls{display:none}
+    
     .app {
         padding: 10px;
     }
@@ -291,12 +303,10 @@ footer {
     }
 }
 
+
 .merge-effect{
     transform:scale(1.08);
 }
-
-
-
 
 
 
