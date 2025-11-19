@@ -13,21 +13,22 @@
             <div class="square">
               <div class="square-content">2048</div>
             </div>
-            <div class="controls">
+
+            <section class="controls">
                 <div class="score-board">
-                    <div class="score" id="score">Score: 0</div>
-                    <div class="score" id="best">Best: 0</div>
+                    <output class="score" id="score">Score: 0</output>
+                    <output class="score" id="best">Best: 0</output>
                 </div>
-            </div>
+            </section>
         </header>
 
         <div class="game-wrap">
-            <div id="game-container"></div>
-            <div class="side-buttons">
-          <button class="btn" id="btn-restart" title="Начать заново">Рестарт</button>
-          <button class="btn secondary" id="btn-undo" title="Отмена хода">Отменить ход</button>
-          <button class="btn secondary" id="btn-leaders">Лидерборд</button>
-          </div>
+            <section id="game-container"></section>
+            <aside class="side-buttons">
+                <button class="btn" id="btn-restart" title="Начать заново">Рестарт</button>
+                <button class="btn secondary" id="btn-undo" title="Отмена хода">Отменить ход</button>
+                <button class="btn secondary" id="btn-leaders">Лидерборд</button>
+            </aside>
             
             
         </div>
@@ -38,7 +39,7 @@
                 <div id="gameover-content">
                     <p id="gameover-msg">Игра окончена</p>
                     <input id="player-name" placeholder="Ваше имя" />
-                    <div style="margin-top:8px;display:flex;gap:8px;">
+                    <div class="modal-buttons">
                         <button class="btn" id="save-score">Сохранить результат</button>
                         <button class="btn secondary" id="restart-from-modal">Начать заново</button>
                     </div>
@@ -49,7 +50,7 @@
         <!-- Leaders modal -->
         <div class="modal" id="modal-leaders">
             <div class="panel">
-                <div style="display:flex;justify-content:space-between;align-items:center">
+                <div class="leaders-header">
                     <h3>Таблица рекордов</h3>
                     <button class="btn secondary" id="close-leaders">Закрыть</button>
                 </div>
