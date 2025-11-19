@@ -14,7 +14,7 @@ const playerName = document.getElementById('player-name');
 const saveScoreBtn = document.getElementById('save-score');
 const restartFromModal = document.getElementById('restart-from-modal');
 const closeLeaders = document.getElementById('close-leaders');
-const mobileControls = document.getElementById('mobile-controls');
+
 
 let state = { grid: [], score: 0, over: false };
 let prevState = null; // для отмены хода (сохраняем полную копию)
@@ -245,39 +245,6 @@ function move(direction){
 
   
   const newTilesArray = [];
-
-  for (let line = 0; line < SIZE; line++){
-    const indices = getLineIndices(line);
-
-    
-    const lineTiles = indices.map(pos => tileAtPos(pos)).filter(Boolean);
-
-    
-    const mergedLine = [];
-    for (let i=0;i<lineTiles.length;i++){
-      const current = lineTiles[i];
-      if (i+1 < lineTiles.length && lineTiles[i+1].value === current.value){
-        const newValue = current.value * 2;
-        const mergedTile = { id: current.id, value: newValue, pos: null, mergedFrom: [ current.id, lineTiles[i+1].id ] };
-        newTilesArray.push(mergedTile);
-        scoreGainTotal += newValue;
-        i++; 
-        moved = true;
-      } else {
-        newTilesArray.push({ id: current.id, value: current.value, pos: null, mergedFrom: null });
-      }
-    }
-
-    
-    while (mergedLine.length < 0){} 
-
-    for (let k = 0; k < indices.length; k++){
-      const targetPos = indices[k];
-      const t = newTilesArray[ newTilesArray.length - indices.length + k ]; 
-    }
-  }
-
-  
   const resultTiles = [];
   for (let line = 0; line < SIZE; line++){
     const indices = getLineIndices(line);
@@ -519,19 +486,55 @@ function getLeaders(){
 }
 function saveLeader(name, score){
   const arr = getLeaders();
-  arr.push({ name: name || '---', score });
+  arr.push({ name: name || '---', score, date: new Date().toLocaleString() });
   arr.sort((a,b)=> b.score - a.score);
   const top = arr.slice(0,10);
   localStorage.setItem(STORAGE_LEADERS, JSON.stringify(top));
 }
-function showLeaders(){
-  const arr = getLeaders();
-  let html = '<table><thead><tr><th>#</th><th>Имя</th><th>Очки</th></tr></thead><tbody>';
-  if (arr.length === 0) html += '<tr><td colspan="4">Рекордов пока нет</td></tr>';
-  arr.forEach((it,i)=>{ html += `<tr><td>${i+1}</td><td>${escapeHtml(it.name)}</td><td>${it.score}</td><td>${escapeHtml(it.date)}</td></tr>` });
-  html += '</tbody></table>';
-  leadersList.innerHTML = html;
+
+
+function showLeaders() {
+    const arr = getLeaders();
+    leadersList.textContent = ''; 
+
+    const table = document.createElement('table');
+    const make = (tag, text) => {
+        const el = document.createElement(tag);
+        if (text !== undefined) el.textContent = text;
+        return el;
+    };
+
+    const thead = make('thead');
+    const headRow = make('tr');
+    ['#', 'Имя', 'Очки', 'Дата'].forEach(t => headRow.appendChild(make('th', t)));
+    thead.appendChild(headRow);
+
+    const tbody = make('tbody');
+
+    if (arr.length === 0) {
+        const tr = make('tr');
+        const td = make('td', 'Рекордов пока нет');
+        td.colSpan = 4;
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+    } else {
+        arr.forEach((it, i) => {
+            const tr = make('tr');
+
+            tr.appendChild(make('td', i + 1));        
+            tr.appendChild(make('td', it.name));     
+            tr.appendChild(make('td', it.score));    
+            tr.appendChild(make('td', it.date || ''));
+
+            tbody.appendChild(tr);
+        });
+    }
+
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    leadersList.appendChild(table);
 }
+
 
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[ch]) ); }
 
@@ -541,30 +544,47 @@ function showGameOver(){
   playerName.style.display = 'block';
   saveScoreBtn.style.display = 'inline-block';
   document.getElementById('gameover-msg').textContent = 'Игра окончена. Ваш счёт: ' + state.score;
-  mobileControls.style.display = 'none';
+
 }
 function hideGameOver(){
   modalGameover.classList.remove('open');
-  mobileControls.style.display = '';
+  
 }
 
+let inputLocked = false;
+
 document.addEventListener('keydown', e => {
-  if (e.key.startsWith('Arrow')){
-    e.preventDefault();
-    const dir = { ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down' }[e.key];
-    if (dir) {
-      const moved = move(dir);
-      if (moved) {  }
+    if (inputLocked) return;
+
+    if (e.key.startsWith('Arrow')) {
+        e.preventDefault();
+        inputLocked = true;
+
+        const dir = {
+            ArrowLeft: 'left',
+            ArrowRight: 'right',
+            ArrowUp: 'up',
+            ArrowDown: 'down'
+        }[e.key];
+
+        if (dir) {
+            const moved = move(dir);
+
+            
+            setTimeout(() => {
+                inputLocked = false;
+            }, 200);
+        }
     }
-  }
 });
+
 
 btnRestart.addEventListener('click', ()=>{ newGame(); hideGameOver(); });
 restartFromModal.addEventListener('click', ()=>{ newGame(); hideGameOver(); modalGameover.classList.remove('open'); });
 btnUndo.addEventListener('click', ()=>{ undo(); });
 
-btnLeaders.addEventListener('click', ()=>{ showLeaders(); modalLeaders.classList.add('open'); mobileControls.style.display='none'; });
-closeLeaders.addEventListener('click', ()=>{ modalLeaders.classList.remove('open'); mobileControls.style.display = '' });
+btnLeaders.addEventListener('click', ()=>{ showLeaders(); modalLeaders.classList.add('open'); });
+closeLeaders.addEventListener('click', ()=>{ modalLeaders.classList.remove('open');  });
 
 saveScoreBtn.addEventListener('click', ()=> {
   const name = playerName.value.trim() || 'Аноним';
@@ -620,9 +640,7 @@ function init(){
   }
 
 
-  function updateMobileVisibility(){ if (window.innerWidth <= 520) mobileControls.style.display = 'block'; else mobileControls.style.display = 'none'; }
-  updateMobileVisibility();
-  window.addEventListener('resize', updateMobileVisibility);
+
 
 
   window._lab2048 = { state, newGame, move, undo, saveGame, loadGame };
